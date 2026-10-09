@@ -1,0 +1,14 @@
+\section{Background and Goal}
+The theme of this project is investigating the use of the Kalman Filter on high-dimensional time series data. We can specify the model as follows:
+\begin{equation}\label{eq:stateprocess}
+    \bm{\beta}_t=\bm{\beta}_{t-1}+\bm{\veps}_t
+\end{equation}
+\begin{equation}\label{eq:obsprocess}
+    y_t=\bm{\beta}_t^T\bm{x}_t+z_t
+\end{equation}
+where $\bm{x}_t, \bm{\beta}_t\in \RR^p$, $p\ge1$ large, and $\bm{\veps}_t\sim N(0,\bm{\Sigma}_t),\ z_t \sim N(0, \tau_t^2)$. Note that $z_t$ is independent of $\bm{x}_t$.
+\Cref{eq:stateprocess,eq:obsprocess} are the state and observation process equations respectively. In this case, we take $(\bm{x}_t,y_t)_{1\le t\le T}$ be observed, while $\bm{\beta}_t,\ \bm{\Sigma}_t,\ \tau_t$ are unobserved (latent).
+
+The goal is to efficiently estimate the $(\bm{\beta}_t)$ process (the loadings) via a Kalman Filter. To this end, we will consider a dimensionality reduction approach by applying PCA to $\bm{x}_t$, and running the Kalman Filter in this space, then back-transform our loading estimates at the end.
+
+We will make use of Python, and NumPy in particular for fast matrix operations.

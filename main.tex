@@ -2,6 +2,11 @@
 %------------PREAMBLE
 \include{preamble}
 \usepackage{morefloats}
+\usepackage[capitalise, noabbrev]{cleveref}
+\newcommand{\veps}{\varepsilon}
+\newcommand{\RR}{\mathbb{R}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theequation}{\arabic{equation}}
 %---------------------------
                                           
 \begin{document}
@@ -15,13 +20,17 @@
 %---------------------------
 
 %---------------------------MAIN BODY
-\input{chapter1}
+\input{background.tex}
 %---------------------------
-
+\input{derivations.tex}
+\input{dynamic_projections.tex}
+\input{dynamic_pcakf.tex}
+\input{results.tex}
+\input{discussion.tex}
 %---------------------------APPENDICES
-\begin{appendices}
- \input{appendix1}
-\end{appendices}
+% \begin{appendices}
+%  \input{appendix1}
+% \end{appendices}
 %---------------------------
 
 %---------------------------BIBLIOGRAPHY

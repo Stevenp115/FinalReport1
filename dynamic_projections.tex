@@ -1,0 +1,22 @@
+\section{Dynamic Projections}
+Suppose we wish to update our PCA loadings as we progress through the iterations. This is a reasonable feature since the loadings estimates may become stale if we keep them static after initialisation. However, one issue arises from this; if we change our projection, then the usual update equations do not adapt to this. For example, the update $P_{k+1}=P_k+Q_k$ assumes the representation given by the $k$-th projection, likewise for updating the state estimate. 
+
+To this end, we can consider a projection-chaining approach which keeps the dynamics of the updating equation identical, but for a projection-approximation step at the start of update. Here, we will keep the loadings minimally restricted: $U\in \RR^{q\times p}$ with $q<p$ and $\mathrm{rank}(U_k)=q$. That is, we do not require orthonormality of columns, nor do these need to represent PCA loadings.
+
+If we have the projected data: $\bm{z}_t=\bm{x}_tU_t$, then we typically reverse this transformation with $\bm{x}_t\approx \bm{z}_tU_t^{+}$ where $U_t^{+}=U_t^T(U^TU)^{-1}$ is the pseudoinverse of $U_t$. To push $\bm{z}_t$ to a new basis, $U_{t+1}$, then we can do this approximately with:
+\begin{align*}
+    \bm{z}_t'&=\bm{x}_tU_{t+1}\\
+    &\approx \bm{x}_tU_tU_t^{+}U_{t+1}\\
+    &=\bm{z}_tU_t^+U_{t+1}
+\end{align*}
+We note that every time we apply an approximate projection, we permanently lose information in the direction of the bases lost in the prior projection. Note that we cannot simply use the projection $U_{t+1}$ on its own since the underlying stae $\bm{x}_t$ is unknown. Hence, this chaining step is necessary to keep the states in the correct basis. 
+\subsection{Rotating Covariance}
+We propose a modification to the usual structure by allowing the PCA-loadings of the $\bm{x}$ data to rotate over time, while keeping the component variances (eigenvalues) constant. We can do this by using a block-rotation matrix $R$ with reasonably small angles, and then we create the new covariance matrix via,
+\[
+\Sigma' = R\Sigma R^T    
+\]
+Observe that implicitly we are rotating the PCA loadings since $R\Sigma R^T = RQ\Lambda Q^TR^T = Q'\Lambda (Q')^T$, where $Q' = RQ$. To be more precise, $R$ is constructed as $R=\mathrm{diag}(R(\theta_1),\dots, R(\theta_k))$ for $k=p/2$ if $p$ is even, else $R = \mathrm{diag}(1, R(\theta_1), \dots, R(\theta_{\lfloor p/2 \rfloor}))$; see \cite{386513}. Hence, to rotate the data incrementally, we can start with some covariance matrix $\Sigma_0$, then define:
+\[\Sigma_n = R^n \Sigma_0 (R^n)^T\]
+There is a question of how to best optimise this for a large dataset. One can directly construct $R^n$ for each $n$ by replacing $R(\theta_j)$ with $R(n \theta_j)$ for each $j=1,\dots,k$, hence eliminating the need to compute the matrix power. From there, we can batch multiply to calculate the entire sequence $(\Sigma_1,\dots, \Sigma_N)$ simulataneously, provided memory constraints are respected. 
+\subsection{Evaluating Approximation Error}
+Due to information loss which results from the projection chaining, we can test how much information is preserved as compared to simply projecting once initially. This can give us a sense of how we should best project our data during the Kalman filter steps. 

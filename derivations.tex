@@ -1,0 +1,27 @@
+\section{Derivations}
+Notation: 
+\begin{itemize}
+    \item $\bm{\beta}_t$: the state variable
+    \item $\bm{Q}_t=\bm{\Sigma}_t$ is the covariance of the state process noise. 
+    \item $\bm{P}_{t|t}$ is the covariance of our estimate of $\bm{\beta}_t$.
+    \item $R_{t}=\tau_t^2$ is the observation noise.
+\end{itemize}
+Prediction:
+\begin{align*}
+    \bm{\beta}_{t|t-1}&=\bm{\beta}_{t-1|t-1}\\
+    \bm{P}_{t|t-1}&=\bm{P}_{t-1|t-1}+\bm{\Sigma}_{t}
+\end{align*}
+Update:
+\begin{align*}
+    \tilde{y}_t&=y_t-\bm{\beta}_{t|t-1}^T\bm{x}_t\\
+    S_t&=\bm{x}_t^T\bm{\Sigma}_t\bm{x}_t+\tau_t^2\sim \mathrm{Cov}(\tilde{y}_t)\\
+    K_t&=\cdots
+\end{align*}
+\subsection{Initialisation}
+TO ADD
+\subsection{PCA-KF}
+The idea is that if $p$ is large, then we apply dimension reduction to $\bm{x}_t$. This assumes the data generating process doesn't change `too much' in the training set.
+
+Observe that if $UU^T\approx I_p$, then
+\[\bm{y}_t\approx\bm{\beta}_t^TUU^T\bm{x}_t+\bm{z}_t\]
+This is the case, for example, if $U$ represent PCA loadings with sufficient proportion of variance retained. 
