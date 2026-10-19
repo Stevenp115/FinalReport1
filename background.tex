@@ -1,4 +1,12 @@
-\section{Background and Goal}
+\section{Background}
+\begin{itemize}
+    \item Introduce Kalman Filters, mean-square optimality.
+    \item Application examples.
+    \item Cite the PCA-KF review paper.
+    \item Give time complexity and motivate the use of PCA.
+\end{itemize}
+The idea of running the KF in reduced-dimension PCA space is a proven method, as described in a recent review by \textcite{Li_Li_Gao_Gao_2026}.
+
 The theme of this project is investigating the use of the Kalman Filter on high-dimensional time series data. We can specify the model as follows:
 \begin{equation}\label{eq:stateprocess}
     \bm{\beta}_t=\bm{\beta}_{t-1}+\bm{\veps}_t
