@@ -1,19 +1,27 @@
 \section{Background}
 \begin{itemize}
-    \item Introduce Kalman Filters, mean-square optimality.
-    \item Application examples.
-    \item Cite the PCA-KF review paper.
-    \item Give time complexity and motivate the use of PCA.
+    \item Introduce Kalman Filters
+    \subitem Optimality
+    \subitem Time Complexity: Cubic in the state dimension \textcite{schmidt2024rankreducedkalmanfilterapproximate} \checkmark
+    \subitem Applications: Physics, Finance
+    \subitem Bayesian Interpretation ?
+    \item Cite the PCA-KF review paper $\checkmark$
 \end{itemize}
-The idea of running the KF in reduced-dimension PCA space is a proven method, as described in a recent review by \textcite{Li_Li_Gao_Gao_2026}.
+We begin by providing background on the standard KF; its optimality, time complexity, and applications. We will present the theory in the case of linear regression. Equation \ref{eq:stateprocess} is the state process equation which governs the dynamics of the unobserved state $\bm{\beta}_t$. Equation \ref{eq:obsprocess} is the observation process, which describes the relationship between observation $y_t$ and other observed data $\bm{x}_t$. We assume we have an initial state estimate $\bm{\beta}_0$; we describe a method of doing this in Section \ref{sec:dynamicfk}.
 
-The theme of this project is investigating the use of the Kalman Filter on high-dimensional time series data. We can specify the model as follows:
 \begin{equation}\label{eq:stateprocess}
     \bm{\beta}_t=\bm{\beta}_{t-1}+\bm{\veps}_t
 \end{equation}
 \begin{equation}\label{eq:obsprocess}
     y_t=\bm{\beta}_t^T\bm{x}_t+z_t
 \end{equation}
+
+The central idea is to 
+
+The idea of running the KF in reduced-dimension PCA space is a proven method, as described in a recent review by \textcite{Li_Li_Gao_Gao_2026}. Indeed, a single prediction-update step for the standard KF has cubic time complexity in the state dimension, $p$ \cite{schmidt2024rankreducedkalmanfilterapproximate}. As such, if $p$ is large, this motivates the idea of perfoming our filtering in a $q$-dimensional space, where $q\ll p$, and then try to recover our state estimates in the original $p$-dimensional space.
+
+The theme of this project is investigating the use of the Kalman Filter on high-dimensional time series data. We can specify the model as follows [STUFF].
+
 where $\bm{x}_t, \bm{\beta}_t\in \RR^p$, $p\ge1$ large, and $\bm{\veps}_t\sim N(0,\bm{\Sigma}_t),\ z_t \sim N(0, \tau_t^2)$. Note that $z_t$ is independent of $\bm{x}_t$.
 \Cref{eq:stateprocess,eq:obsprocess} are the state and observation process equations respectively. In this case, we take $(\bm{x}_t,y_t)_{1\le t\le T}$ be observed, while $\bm{\beta}_t,\ \bm{\Sigma}_t,\ \tau_t$ are unobserved (latent).
 

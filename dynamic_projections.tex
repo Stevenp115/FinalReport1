@@ -23,6 +23,8 @@ We propose a modification to the usual structure by allowing the PCA-loadings of
 \]
 Observe that implicitly we are rotating the PCA loadings since $R\Sigma R^T = RQ\Lambda Q^TR^T = Q'\Lambda (Q')^T$, where $Q' = RQ$. To be more precise, $R$ is constructed as $R=\mathrm{diag}(R(\theta_1),\dots, R(\theta_k))$ for $k=p/2$ if $p$ is even, else $R = \mathrm{diag}(1, R(\theta_1), \dots, R(\theta_{\lfloor p/2 \rfloor}))$; see \cite{386513}. Hence, to rotate the data incrementally, we can start with some covariance matrix $\Sigma_0$, then define:
 \[\Sigma_n = R^n \Sigma_0 (R^n)^T\]
+An important property of this transformation is that because the eigenvalues stay intact, the number of components which explain a given proportion of variance stays constant.
+
 There is a question of how to best optimise this for a large dataset. One can directly construct $R^n$ for each $n$ by replacing $R(\theta_j)$ with $R(n \theta_j)$ for each $j=1,\dots,k$, hence eliminating the need to compute the matrix power. From there, we can batch multiply to calculate the entire sequence $(\Sigma_1,\dots, \Sigma_N)$ simulataneously, provided memory constraints are respected.
 
 In context of the projection chaining apporach, perhaps it is viable if the accumulated subspace rotation across the dataset is small.

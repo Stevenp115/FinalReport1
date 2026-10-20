@@ -1,20 +1,20 @@
 \section{Results}
 Which plots/tables to provide?
 \begin{itemize}
-    \item Plot of average proportion of time that the chained proportion is greater than or equal to the naive proportion: line plot with error bars, against proportion of variance.
-    \item Boxplot of Mahalanobis distances based on chaining frequency (inc. no chaining).
-    \item Mahalanobis distance against: proportion of variance retained (fixed seed).
-    \item Speed of the algorithm based on: (a) chaining frequency, (b) proportion of variance retained. 
-    \item (OPTIONAL) Runtime comparison: CPU vs CUDA.
+    \item Innovation RMSE over iterations (rolling window?)
+    \item Boxplot of innovation RMSE and parameter RMSE based on chaining frequency (inc. no chaining).
+    \item Line plot of innovation RMSE and parameter RMSE based on proportion of variance retained, including error bars.
+    \item Algorithm runtime against $p$, and optionally, chaining frequency.
 \end{itemize}
 \subsection{Dynamic Projection Tests}
 First we present a simulation result with the following hyperparamters:
 \begin{itemize}
-    \item $(n,n_{burn},p)=(50000,1000,100)$
-    \item Angle increment (in radians) $\theta=0.05$, or, $\frac{2\pi}{\theta}\approx 126$
+    \item $(n,n_{burn},p)=(2500,400,200)$
+    \item Initial PCA proportion of variance retained (target): $0.80$.
+    \item Angle increment (in radians) $\theta=0.005$, or, $\frac{2\pi}{\theta}\approx 1257$.
     \item $\mathrm{Var}(z_t) = 10^{-2}$
     \item $\veps_t$ construction scale parameter is $10^{-2}$
-    \item $x_t$ construction scale parameter is $10^{-1}$
+    \item $x_t$ construction scale parameter is $10^{-2}$
 \end{itemize}
 \begin{figure}[htbp]
     \centering
@@ -22,9 +22,9 @@ First we present a simulation result with the following hyperparamters:
     \caption{Proportion of variance retained by method.}
     \label{fig:propvar}
 \end{figure}
-We observe from Figure \ref{fig:propvar} that the Chained approach is generally more performant than with the fixed projection, however, it is not always better. Note that our projection chaining does not assume anything about the rotation structure; it just cares that the loadings are changing over time. One can entertain the idea that if a rotation structure is assumed, then all that is needed is to estimate the angle step in each plane, then in theory we circumvent the information loss issue. However, the rotation structure does not have an immediate real world application, so there is no grounds to even assume this when chaining projections.
+\subsection{Dynamic Filter}
+% We observe from Figure \ref{fig:propvar} that the Chained approach is generally more performant than with the fixed projection, however, it is not always better. Note that our projection chaining does not assume anything about the rotation structure; it just cares that the loadings are changing over time. One can entertain the idea that if a rotation structure is assumed, then all that is needed is to estimate the angle step in each plane, then in theory we circumvent the information loss issue. However, the rotation structure does not have an immediate real world application, so there is no grounds to even assume this when chaining projections.
 
-Now
 \subsection{Static Kalman Filter}
 Simulations have been largely done, but still need to produce the plots. Will provide:
 \begin{itemize}
@@ -33,4 +33,4 @@ Simulations have been largely done, but still need to produce the plots. Will pr
     \item Time performance.
 \end{itemize}
 \subsection{Dynamic Kalman Filter}
-Have only run small scale tests so far. Will produce same plots/tables as above.
+The first result is a comparison of the state estimation accuracy.
