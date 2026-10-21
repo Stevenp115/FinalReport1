@@ -16,7 +16,7 @@ First we present a simulation result with the following hyperparamters:
     \item $\veps_t$ construction scale parameter is $10^{-2}$
     \item $x_t$ construction scale parameter is $10^{-2}$
 \end{itemize}
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/propvar.png}
     \caption{Proportion of variance retained by method.}
@@ -24,13 +24,71 @@ First we present a simulation result with the following hyperparamters:
 \end{figure}
 \subsection{Dynamic Filter}
 % We observe from Figure \ref{fig:propvar} that the Chained approach is generally more performant than with the fixed projection, however, it is not always better. Note that our projection chaining does not assume anything about the rotation structure; it just cares that the loadings are changing over time. One can entertain the idea that if a rotation structure is assumed, then all that is needed is to estimate the angle step in each plane, then in theory we circumvent the information loss issue. However, the rotation structure does not have an immediate real world application, so there is no grounds to even assume this when chaining projections.
-
-\subsection{Static Kalman Filter}
-Simulations have been largely done, but still need to produce the plots. Will provide:
+Now, we provide a simulation result for the full PCA-KF algorithm with the following hyperparamters:
 \begin{itemize}
-    \item Residual accuracy (based on a normalised version of $\mathrm{var}(\tilde{y})$) using the estimated $\bm{\beta}$, maximised over initial choices of $P,Q\in \{10^{-4}I,10^{-3}I, 10^{-2}I, 10^{-1}I\}$.
-    \item Compare a few dimensions of $\beta$ vs. $\hat{\beta}$.
-    \item Time performance.
+    \item $(n,n_{burn},p)=(2500,500,200)$
+    \item Initial PCA proportion of variance retained (target): $0.90$.
+    \item Angle increment (in radians) $\theta=0.0002$, to prevent excessive shrinkage of our estimate.
+    \item $\mathrm{Var}(z_t) = 10^{-2}$
+    \item $\veps_t$ construction scale parameter is $10^{-2}$
+    \item $x_t$ construction scale parameter is $10^{-2}$
 \end{itemize}
-\subsection{Dynamic Kalman Filter}
-The first result is a comparison of the state estimation accuracy.
+\begin{figure}[H]
+    \caption{KF estimation error vs proportion of variance}
+    \centering
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/innov_vs_prop.png}
+        \caption{RMSE($\hat{y},y$)}
+        \label{fig:placeholder}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/level_vs_prop.png}
+        \caption{RMSE($\hat{\beta},\beta$)}
+        \label{fig:placeholder}
+    \end{subfigure}
+    \label{fig:rmseprop}
+\end{figure}
+
+\begin{figure}[H]
+    \caption{KF estimation error vs chaining mode}
+    \centering
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/innov_vs_chain.png}
+        \caption{RMSE($\hat{y},y$)}
+        \label{fig:placeholder}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/level_vs_chain.png}
+        \caption{RMSE($\hat{\beta},\beta$)}
+        \label{fig:placeholder}
+    \end{subfigure}
+    \label{fig:rmsechain}
+\end{figure}
+
+Evidently, it is better to not to chain projections, but rather, stay in the original PCA space.
+
+Finally, we 
+\begin{table}[htbp]
+    \centering
+    \caption{Runtime and Components retained: Average of $10$ runs.}
+    \begin{tabular}{c c c}
+        \toprule
+        $p$ & Avg. Time (s) & $q$ \\
+        \midrule
+        50 & 0.223 $\pm$ 0.001 & 17.2 \\
+        \midrule
+        100 & 0.402 $\pm$ 0.003 & 32.4 \\
+        \midrule
+        200 & 0.901 $\pm$ 0.004 & 59.2 \\
+        \midrule
+        300 & 1.736 $\pm$ 0.035 & 80.9 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:label}
+\end{table}

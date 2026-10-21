@@ -6,6 +6,8 @@
 \usepackage{morefloats}
 \usepackage[capitalise, noabbrev]{cleveref}
 \usepackage{listings}
+\usepackage{float}
+\usepackage{subcaption}
 \lstdefinestyle{terminal}{
   basicstyle=\ttfamily\small,
   frame=single,
@@ -16,6 +18,7 @@
 }
 \newcommand{\veps}{\varepsilon}
 \newcommand{\RR}{\mathbb{R}}
+\newcommand{\EE}{\mathbb{E}}
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\theequation}{\arabic{equation}}  
 %---------------------------
@@ -31,6 +34,7 @@
 %---------------------------
 
 %---------------------------MAIN BODY
+\input{todo.tex}
 \input{introduction.tex}
 \input{background.tex}
 %---------------------------
@@ -41,6 +45,7 @@
 \input{results.tex}
 \input{discussion.tex}
 %---------------------------APPENDICES
+\newpage
 \begin{appendices}
  \input{appendix1}
 \end{appendices}

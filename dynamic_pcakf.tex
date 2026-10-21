@@ -4,7 +4,7 @@ This applies the previous projection chaining apporach to the PCA-KF algorithm. 
     \item \textbf{Predict:}
     \begin{enumerate}
         \item $\bm{P}_{t|t-1} = \bm{P}_{t-1|t-1}+\bm{Q}_{t-1|t-1}$
-        \item $\bm{\beta}_{t|t-1} = \bm{\beta}_{t-1|t-1}$
+        \item $\bm{\beta}_{t|t-1}' = \bm{\beta}_{t-1|t-1}'$
     \end{enumerate}
     \item \textbf{Project:}
     \begin{enumerate}
@@ -12,15 +12,15 @@ This applies the previous projection chaining apporach to the PCA-KF algorithm. 
         \item Acquire the pushforward map: $\bm{V}_t=\bm{U}_{t-1}^T\bm{U}_t$
         \item $\bm{P}_{t|t-1}\leftarrow \bm{V}_t^T\bm{P}_{t|t-1}\bm{V}_t$
         \item $\bm{Q}_{t|t-1}\leftarrow \bm{V}_t^T\bm{Q}_{t|t-1}\bm{V}_t$
-        \item $\bm{\beta}_{t|t-1} \leftarrow \bm{\beta}_{t|t-1}\bm{V}_t$
+        \item $\bm{\beta}_{t|t-1}' \leftarrow \bm{\beta}_{t|t-1}'\bm{V}_t$
         \item $\bm{z}_t\leftarrow \bm{z}_{t}\bm{V}_t$
     \end{enumerate}
     \item \textbf{Update:}
     \begin{enumerate}
-        \item $\delta_t=y_t-\bm{\beta}_{t|t-1}^T\bm{z}_t$
+        \item $\delta_t=y_t-\bm{\beta}_{t|t-1}'^T\bm{z}_t$
         \item $S_t= \bm{z}_t^T \bm{P}_{t|t-1}\bm{z}_t + R$
         \item $\bm{K}_t = S_t^{-1}\bm{P}_{t|t-1}\bm{z}_t$
-        \item $\bm{\beta}_{t|t} \leftarrow \bm{\beta}_{t|t-1} + \delta_t\bm{K}_t$
+        \item $\bm{\beta}_{t|t}' \leftarrow \bm{\beta}_{t|t-1}' + \delta_t\bm{K}_t$
         \item $\bm{P}_{t|t} \leftarrow (I-\bm{K}_t \bm{z}_t^T)\bm{P}_{t|t-1}(I-\bm{K}_t \bm{z}_t^T)^T+R\bm{K}_t\bm{K}_t^T$
     \end{enumerate}
 \end{enumerate} 

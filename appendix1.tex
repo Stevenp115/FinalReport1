@@ -4,3 +4,13 @@ Figure \ref{fig:propvar} can be reproduced via the following command:
 \begin{lstlisting}[style=terminal]
     python rotation_test.py --n 20000 --p 200 --burn 400 --prop 0.80 --max-angle 0.005 --ts
 \end{lstlisting}
+
+Figure \ref{fig:rmseprop} can be reproduced via the following command:
+
+\begin{lstlisting}[style=terminal]
+    python rotation_test.py --n 2500 --p 200 --burn 500 --rotation-angle 0.0002 --rotate-cov --ts --prop x
+\end{lstlisting}
+for $x\in \{0.2, 0.4, 0.6, 0.8\}$, then run
+\begin{lstlisting}[style=terminal]
+    python get_sim_plots.py
+\end{lstlisting}
