@@ -47,9 +47,12 @@
 \input{conclusion.tex}
 %---------------------------APPENDICES
 \newpage
-\begin{appendices}
- \input{appendix1}
-\end{appendices}
+\addcontentsline{toc}{chapter}{Appendix}
+\appendix
+\input{appendix1}
+% \begin{appendices}
+%  \
+% \end{appendices}
 %---------------------------
 
 %---------------------------BIBLIOGRAPHY
@@ -57,4 +60,6 @@
 \printbibliography
 %---------------------------
 
+%--------------------------- DECLARATION OF GEN AI USE
+\input{declaration.tex}
 \end{document}

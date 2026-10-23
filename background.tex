@@ -8,7 +8,7 @@ We begin by providing background on the standard KF; its optimality and time com
 \end{equation}
 where $\bm{\veps}_t \sim N(0, \bm{Q})$, and $u_t \sim N(0, R)$. Here, $\bm{Q}\in \RR^{p\times p}$ is the state noise covariance matrix, and $R$ is the measurement noise (co)variance, both of which are assumed to be fixed over time in this project.
 
-We denote the current estimate of $\bm{\beta}_{t}$ as of time $s\le t$ as $\hat{\bm{\beta}}_{t|s}$. Further, we assume we have an initial state estimate $\bm{\beta}_{1|1}$; we describe a method of estimating this in Section \ref{sec:dynamicfk}. Define $\bm{P}_{t|s}=\EE[(\bm{\beta}_t-\bm{\beta}_{t|s})(\bm{\beta}_t-\bm{\beta}_{t|s})^T] \in \RR^{p \times p}$ to be the estimate error covariance.
+We denote the current estimate of $\bm{\beta}_{t}$ as of time $s\le t$ as $\hat{\bm{\beta}}_{t|s}$. Further, we assume we have an initial state estimate $\bm{\beta}_{0|0}$; we describe a method of estimating this in Section \ref{sec:dynamicfk}. Define $\bm{P}_{t|s}=\EE[(\bm{\beta}_t-\bm{\beta}_{t|s})(\bm{\beta}_t-\bm{\beta}_{t|s})^T] \in \RR^{p \times p}$ to be the estimate error covariance.
 
 At time $t$, we predict $\bm{\beta}_{t|t-1} = \bm{\beta}_{t-1|t-1}$, and $\bm{P}_{t|t-1} = \bm{P}_{t-1|t-1} + \bm{Q}$, then estimate what $\bm{y}_t$ would be under this state, given $\bm{x}_t$;
 \[
