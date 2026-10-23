@@ -1,5 +1,5 @@
 \section{AI Declaration}
-Claude Opus 5.5 was used to write a single if statement to prepend a matrix with a value, and to generate an output filename in `run\_simulation.py'. Where this has been used, it has been labelled with a comment in the code.
+Claude Opus 5.5 was used to write an if statement to prepend a matrix with a value, and to generate an output filename in `run\_simulation.py'. Where this has been used, it has been labelled with a comment in the code.
 \section{Reproducing results}\label{app:reproduce}
 The simulations were run with the following hardware:
 \begin{itemize}
@@ -44,4 +44,9 @@ The data for Table \ref{tab:label} can be generated via running the following co
 The data for the block diagonal comparison can be generated via the following command, and it prints to the terminal:
 \begin{lstlisting}[style=terminal]
     python run_simulation.py --n 3000 --p 200 --burn 400 --prop 0.80 --rotation-angle 0.001 --rotate-cov --time --outfolder "data/time_benchmarks" --n-iters 1 --bench
+\end{lstlisting}
+
+Figures (...) are generated with the following command:
+\begin{lstlisting}[style=terminal]
+    python run_simulation.py --n 2000 --p 200 --burn 400 --prop 0.80 --rotate-cov --rotation-angle 0.0001 --store-cov --get-additional-plots
 \end{lstlisting}
