@@ -1,27 +1,23 @@
 \section{Results}
-Which plots/tables to provide?
-\begin{itemize}
-    \item Innovation RMSE over iterations (rolling window?)
-    \item Boxplot of innovation RMSE and parameter RMSE based on chaining frequency (inc. no chaining).
-    \item Line plot of innovation RMSE and parameter RMSE based on proportion of variance retained, including error bars.
-    \item Algorithm runtime against $p$, and optionally, chaining frequency.
-\end{itemize}
+Here we present some simulation results to test the speed and accuracy of the PCA-KF model. In addition, we provide a result which illustrates how `stale' a static PCA estimate can get when the data is subjected to the covariance rotation as described in Section \ref{sec:rotcov}.
 \subsection{Dynamic Projection Tests}
 First we present a simulation result with the following hyperparamters:
 \begin{itemize}
-    \item $(n,n_{burn},p)=(2500,400,200)$
+    \item $(n,n_{burn},p)=(2500,400,200)$, where $n$ is the number of observations, $p$ is the state dimension, and $n_{burn}$ is the number of observations used to initialise PCA.
     \item Initial PCA proportion of variance retained (target): $0.80$.
-    \item Angle increment (in radians) $\theta=0.005$, or, $\frac{2\pi}{\theta}\approx 1257$.
-    \item $\mathrm{Var}(z_t) = 10^{-2}$
+    \item Maximum angle increment (in radians) $\theta=0.005$, or, $\frac{2\pi}{\theta}\approx 1257$.
+    \item $\mathrm{Var}(u_t) = 10^{-2}$
     \item $\veps_t$ construction scale parameter is $10^{-2}$
     \item $x_t$ construction scale parameter is $10^{-2}$
 \end{itemize}
+We fix an initial PCA rotation $L$, then at time $t$ (of the non-burn data), we find the proportion of variance explained by $L$ of the true covarinace $\Sigma_t$ as: $\frac{\mathrm{tr}(L^T\Sigma_t L)}{\mathrm{tr}(\Sigma_t)}$.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/propvar.png}
     \caption{Proportion of variance retained by method.}
     \label{fig:propvar}
 \end{figure}
+We can observe from Figure \ref{fig:propvar} that the explained variance of the initial $q$ eigenvectors of the true covariance matrix drops sharply. Indeed, past roughly $1000$ iterations, the proportion of variance plateaus at $\sim 0.33$. This suggests the need to update our representations as we iterate through the algorithm. 
 \subsection{Dynamic Filter}
 % We observe from Figure \ref{fig:propvar} that the Chained approach is generally more performant than with the fixed projection, however, it is not always better. Note that our projection chaining does not assume anything about the rotation structure; it just cares that the loadings are changing over time. One can entertain the idea that if a rotation structure is assumed, then all that is needed is to estimate the angle step in each plane, then in theory we circumvent the information loss issue. However, the rotation structure does not have an immediate real world application, so there is no grounds to even assume this when chaining projections.
 Now, we provide a simulation result for the full PCA-KF algorithm with the following hyperparamters:
@@ -51,7 +47,9 @@ Now, we provide a simulation result for the full PCA-KF algorithm with the follo
     \end{subfigure}
     \label{fig:rmseprop}
 \end{figure}
+We see from Figure \ref{fig:rmseprop} that increasing the retained proportion of variance reduces the error in both metrics, well beyond the margin of error. However, the actual difference for the $\bm{\beta}$ RMSE is only increased by $\sim 13\%$ when going from $0.8$ to $0.2$ proportion of variance.
 
+Finally, we calculate the fit times and number of components retained for $(n,n_{burn})=(2000,400)$, prop=$0.90$, same scale options as previous simulations, for $p\in \{50,100,200,300\}$. The algorithm was run on an Intel i7 12700KF CPU.
 \begin{figure}[H]
     \caption{KF estimation error vs chaining mode}
     \centering
@@ -71,24 +69,25 @@ Now, we provide a simulation result for the full PCA-KF algorithm with the follo
     \label{fig:rmsechain}
 \end{figure}
 
-Evidently, it is better to not to chain projections, but rather, stay in the original PCA space.
+From Figure \ref{fig:rmsechain}, we note that the chaining approach is convincingly less accurate than static regarding the innovation error, but less convincingly so for the state error. Ergo, we see no advantage to chaining projections over just keeping the static PCA.
 
-Finally, we 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
-    \caption{Runtime and Components retained: Average of $10$ runs.}
-    \begin{tabular}{c c c}
+    \caption{Runtime and Components retained: Average of $5$ runs.}
+    \begin{tabular}{c c c c}
         \toprule
-        $p$ & Avg. Time (s) & $q$ \\
+        $p$ & mean\_time $\pm$ std. err. (s) & $q$ \\
         \midrule
-        50 & 0.223 $\pm$ 0.001 & 17.2 \\
+        50 & 0.379 $\pm$ 0.001 & 17.2 \\
         \midrule
-        100 & 0.402 $\pm$ 0.003 & 32.4 \\
+        100 & 0.945 $\pm$ 0.005 & 32.4 \\
         \midrule
-        200 & 0.901 $\pm$ 0.004 & 59.2 \\
+        200 & 3.402 $\pm$ 0.010 & 59.2 \\
         \midrule
-        300 & 1.736 $\pm$ 0.035 & 80.9 \\
+        300 & 6.378 $\pm$ 0.018 & 80.9 \\
         \bottomrule
     \end{tabular}
     \label{tab:label}
 \end{table}
+
+For a clean optimisation comparison, we can compare the fast block diag algorithm with the base one. Averaging 10 calls to each function gives $0.839\pm 0.004$s and $1.741\pm 0.007$s for the fast and base algorithms respectively, where the error is the standard error.
